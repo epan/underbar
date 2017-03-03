@@ -214,19 +214,14 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    // var hasIterator = arguments.length > 1;
-    // return _.reduce(collection, function(passed, item) {
-    //   // if no iterator provided, test to see if each item is true,
-    //   // return true if 1 or more is true
-    //   if (passed || iterator(item)) {
-    //     return true;
-    //   }
-    //
-    //   // else if an is iterator provided, use the iterator on each item,
-    //   // return true if 1 or more is true
-    //
-    //   })
-    // }, false);
+    var hasIterator = arguments.length > 1;
+    var myIterator = hasIterator ? iterator : function(item) { return !!item; }
+    return _.reduce(collection, function(passed, item) {
+      if (passed) {
+        return true;
+      }
+      return !!myIterator(item)
+    }, false);
   };
 
 
