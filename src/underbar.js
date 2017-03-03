@@ -190,10 +190,27 @@
     }, false);
   };
 
+// iterate through collection items
+// for each item, check if it passes the iterator test
+// if it does not, save false
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    var hasCallback = arguments.length > 1
+    return _.reduce(collection, function(evaluation, item) {
+      if (!hasCallback) {
+        if (!evaluation || !item) {
+          return false;
+        }
+        return true
+      } else if (hasCallback) {
+        if (!evaluation || !iterator(item)) {
+          return false;
+        }
+        return true;
+      }
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
