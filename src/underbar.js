@@ -257,9 +257,22 @@
       return result;
     }, destination);
   };
+
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var destination = obj;
+    var args = Array.prototype.slice.call(arguments);
+    var source = args.slice(1);
+
+    return _.reduce(source, function(result, object) {
+      _.each(Object.keys(object), function(key) {
+        if (object.hasOwnProperty(key) && !destination.hasOwnProperty(key)) {
+          result[key] = object[key];
+        }
+      })
+      return result;
+    }, destination);
   };
 
 
