@@ -316,6 +316,16 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // make prior arguments and results available to future calls
+    var cache = {};
+
+    return function() {
+      // if arguments already exist as a key in cache, return cache[key]
+
+      // else run the function on the arguments
+      // then add the the argument as key and result as value
+      // then return the result
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
