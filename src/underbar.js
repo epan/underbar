@@ -257,9 +257,22 @@
       return result;
     }, destination);
   };
+
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var destination = obj;
+    var args = Array.prototype.slice.call(arguments);
+    var source = args.slice(1);
+
+    return _.reduce(source, function(result, object) {
+      _.each(Object.keys(object), function(key) {
+        if (object.hasOwnProperty(key) && !destination.hasOwnProperty(key)) {
+          result[key] = object[key];
+        }
+      })
+      return result;
+    }, destination);
   };
 
 
@@ -303,6 +316,19 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var cache = {};
+
+    return function() {
+      var result;
+      var args = Array.prototype.slice.call(arguments);
+      var argsString = JSON.stringify(args);
+      if (_.contains(Object.keys(cache), argsString)) {
+        return cache[argsString];
+      }
+      result = func.apply(this, arguments);
+      cache[argsString] = result;
+      return result;
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -312,6 +338,11 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.call(arguments);
+    args = _.last(args, args.length - 2);
+    return setTimeout(function() {
+      return func.apply(this, args);
+    }, wait);
   };
 
 
@@ -326,6 +357,24 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var destination = [];
+    var used = [];
+    var index;
+
+    function randomIndex(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    while (destination.length < array.length) {
+      index = randomIndex(0, array.length);
+      if (!_.contains(used, index)) {
+        destination.push(array[index]);
+        used.push(index);
+      }
+    }
+    return destination;
   };
 
 
