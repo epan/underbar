@@ -318,23 +318,21 @@
   _.memoize = function(func) {
     // make prior arguments and results available to future calls
     var cache = {};
-    var result;
 
     return function() {
+      var result;
       // Save arguments as an array
-      var args = Array.prototype.split.call(arguments);
+      var args = Array.prototype.slice.call(arguments);
       var argsString = JSON.stringify(args);
       // Iterate through cache keys to see if arguments already exists as a key
-      _.each(Object.keys(cache), function(key) {
+      if (_.contains(Object.keys(cache), argsString)) {
         // if arguments already exist as a key in cache, return cache[key]
-        if (cache[key] === argsString) {
-          return cache[key];
-        }
-      });
+        return cache[argsString];
+      }
       // else run the function on the arguments
       result = func.apply(this, arguments);
       // then add the the argument array as key and result as value
-      cache[key] = result;
+      cache[argsString] = result;
       // then return the result
       return result;
     }
