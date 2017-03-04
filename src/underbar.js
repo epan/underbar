@@ -357,6 +357,16 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    // create new empty array of equal length for destination array
+    // create new empty array for used indexes
+
+    // random number generator for integers from 0 to source.length - 1
+    // for loop until destination array is equal in length to source array
+      // generate random int to choose index of source array
+      // if random int is NOT in used array,
+        // push item at source index to destination
+        // add int to used array
+    return destination;
   };
 
 
